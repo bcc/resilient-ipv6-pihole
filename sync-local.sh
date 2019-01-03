@@ -9,19 +9,19 @@ for TARGET in ${TARGETS}; do
 	for F in ${FILES}; do 
 		#echo ${F}
 		EF="/etc/${F}"
-		scp -i ${ID} -q ${F} ${TARGET}:${EF}.new
-		ssh -i ${ID} ${TARGET} "test -f ${EF} && diff -u ${EF} ${EF}.new"
+		scp -i ${ID} -q ${F} root@${TARGET}:${EF}.new
+		ssh -i ${ID} root@${TARGET} "test -f ${EF} && diff -u ${EF} ${EF}.new"
 		if [ $? != 0 ]; then
-			ssh -i ${ID} ${TARGET} "test -f ${EF} && mv ${EF} ${EF}.old; mv ${EF}.new ${EF}"
+			ssh -i ${ID} root@${TARGET} "test -f ${EF} && mv ${EF} ${EF}.old; mv ${EF}.new ${EF}"
 			CHANGED=1
 		else 
-			ssh -i ${ID} ${TARGET} "rm ${EF}.new"
+			ssh -i ${ID} root@${TARGET} "rm ${EF}.new"
 		fi
 	done
 
 	if [ ${CHANGED} == 1 ]; then
 		echo "Files changed, reloading ${TARGET}!";
-		ssh -i ${ID} ${TARGET} "service pihole-FTL restart"
+		ssh -i ${ID} root@${TARGET} "service pihole-FTL restart"
 		if [ $? != 0 ]; then
 			echo "Got an error code restarting pihole-FTL on ${TARGET}, exiting!"
 			exit 1
