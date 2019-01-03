@@ -2,6 +2,8 @@
 
 I was getting fed up with Mikrotik's DNS and DHCP and the apparent afterthought that their IPv6 integration is, and at the same time I patched the vm server that my pihole lives on, which reminded me that I've been meaning to set up a second one for resilience. Overkill? Maybe. Satisfying though.
 
+This will give you working IPv4 and IPv6 DNS and DHCP, with both pihole nodes being active (but not conflicting) and coexists nicely with the pihole web configuration, as long as you're willing to not update static leases through the pihole web interface.
+
 ## Instructions 
 
 Set up pair of pihole servers. Give them static IP addresses. I'm using one on a VM running ubuntu, and one on a raspberry pi running raspbian.
