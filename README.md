@@ -8,17 +8,17 @@ Set up pair of pihole servers. Give them static IP addresses. I'm using one on a
 
 ### Static allocations 
 
-Edit the pihole/hosts.local file and set up any static IPs that you wish to assign. Duplicate hostnames for IPv4 and IPv6 entries. There are more examples in the file, but this will be used for both A and AAAA records, as well as PTR records for the reverse entries.
+Edit the `pihole/hosts.local` file and set up any static IPs that you wish to assign. Duplicate hostnames for IPv4 and IPv6 entries. There are more examples in the file, but this will be used for both A and AAAA records, as well as PTR records for the reverse entries.
 
     192.168.6.10            desktop
     2a02:c0ff:ee::10        desktop 
 
-Define MAC addresses and hostnames in dnsmasq.d/04-pihole-static-dhcp.conf using the following format. These will be used for IPv4 and IPv6 lookups on the local network.
+Define MAC addresses and hostnames in `dnsmasq.d/04-pihole-static-dhcp.conf` using the following format. These will be used for IPv4 and IPv6 lookups on the local network.
 
     dhcp-host=B8:27:EB:AA:AA:AA,desktop
     dhcp-host=B8:27:EB:BB:BB:BB,pizero
 
-Next you'll need to enter your own specific values for DNS server addresses and domain names into dnsmasq.d/02.local.conf:
+Next you'll need to enter your own specific values for DNS server addresses and domain names into `dnsmasq.d/02.local.conf`:
 
     addn-hosts=/etc/pihole/hosts.local
     local=/example.com/
@@ -28,7 +28,7 @@ Next you'll need to enter your own specific values for DNS server addresses and 
     dhcp-option=option6:dns-server,[2a02:c0ff:ee::3],[2a02:c0ff:ee::4]
     ra-param=*,0,0
 
-Finally, if your piholes are not called 'pihole1' and 'pihole2' then edit the line at the top of sync-local.sh. If you don't have any working DNS at the moment, you can put IP addresses there instead. 
+Finally, if your piholes are not called 'pihole1' and 'pihole2' then edit the line at the top of `sync-local.sh`. If you don't have any working DNS at the moment, you can put IP addresses there instead. 
 
 ### SSH Key setup 
 We'll use an ssh key to make distributing the files easy. You can run this anywhere you like, but it needs access to both your pihole servers. A normal user home directory on pihole1 is a good place if you don't have anywhere else. 
@@ -37,7 +37,7 @@ Generate SSH key:
 
     ssh-keygen -f id_dnsdhcp
 
-And then place the content of id_dnsdhcp.pub in /root/.ssh/authorized_keys on each of your pihole servers. Make sure the permissions on that file and directory are correct: 
+And then place the content of `id_dnsdhcp.pub` in `/root/.ssh/authorized_keys` on each of your pihole servers. Make sure the permissions on that file and directory are correct: 
 
     root@pihole2:~# ls -lad .ssh/ .ssh/authorized_keys
     drwx------ 2 root root 4096 Jan  1 00:09 .ssh/
@@ -55,7 +55,7 @@ In the pihole interface on pihole1, log into the admin interface and go to Setti
 Then repeat the same settings on pihole2, but give it a different DHCP range. I used 192.168.6.96 to 192.168.6.111 for this one. This ensures that dynamic addresses handed out by each pihole won't overlap. 
 
 The next setting to configure on each of the pihole servers is a file which will be different on each one. 
-On pihole1 create /etc/dnsmasq.d/5.v6-range.conf, with the following content:
+On pihole1 create `/etc/dnsmasq.d/5.v6-range.conf`, with the following content:
 
     dhcp-range=::300,::3ff,constructor:ens3,ra-names,slaac,1h
 
