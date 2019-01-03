@@ -70,7 +70,7 @@ The difference in these files defines the IPv6 dynamic range in the same way tha
 ### Deploy! 
 Run ./sync-local.sh - the first time you run it, if you've not SSHed into your piholes already, you'll be asked to confirm ssh host keys. Every time you run it, it will check to see if the files have been changes, print out a diff of the changes, then restart the pihole service to reload the configuration. 
 
-Once this has happened, you'll notice that the 'Static DHCP leases configuration' table under the 'DHCP' tab in pihole is now populated with your MAC and hostname pairs. If you update them in the web interface, they will be overwritten next time you run 'sync-local.sh' though.
+Once this has happened, you'll notice that the 'Static DHCP leases configuration' table under the 'DHCP' tab in pihole is now populated with your MAC and hostname pairs. If you update them in the web interface, they will be overwritten next time you run 'sync-local.sh' though. Ignore the unticked IPv6 box - we have enabled it in the dnsmasq configuration and the web interface is incorrect here. If you enable it you'll get an incorrect DHCPv6 range being issued.
 
 IPv6 leases under 'Currently active DHCP leases' do look a bit strange as dnsmasq doesn't log the mac address, but they do work correctly. 
 
