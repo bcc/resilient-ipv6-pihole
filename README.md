@@ -1,12 +1,12 @@
-= Redundant PiHoles with working IPv6 resolution =
+# Redundant PiHoles with working IPv6 resolution
 
 I was getting fed up with Mikrotik's DNS and DHCP and the apparent afterthought that their IPv6 integration is, and at the same time I patched the vm server that my pihole lives on, which reminded me that I've been meaning to set up a second one for resilience. Overkill? Maybe. Satisfying though.
 
-== Instructions ==
+## Instructions 
 
 Set up pair of pihole servers. Give them static IP addresses. I'm using one on a VM running ubuntu, and one on a raspberry pi running raspbian.
 
-=== Static allocations ===
+### Static allocations 
 
 Edit the pihole/hosts.local file and set up any static IPs that you wish to assign. Duplicate hostnames for IPv4 and IPv6 entries. There are more examples in the file, but this will be used for both A and AAAA records, as well as PTR records for the reverse entries.
 
@@ -30,7 +30,7 @@ Next you'll need to enter your own specific values for DNS server addresses and 
 
 Finally, if your piholes are not called 'pihole1' and 'pihole2' then edit the line at the top of sync-local.sh. If you don't have any working DNS at the moment, you can put IP addresses there instead. 
 
-=== SSH Key setup ===
+### SSH Key setup 
 We'll use an ssh key to make distributing the files easy. You can run this anywhere you like, but it needs access to both your pihole servers. A normal user home directory on pihole1 is a good place if you don't have anywhere else. 
 
 Generate SSH key:
@@ -48,7 +48,7 @@ If they're wrong, fix them:
     chmod 700 /root/.ssh
     chmod 644 /root/.ssh/authorized_keys 
 
-=== DHCP configuration ===
+### DHCP configuration 
 
 In the pihole interface on pihole1, log into the admin interface and go to Settings, then DHCP. Enable the DHCP server, and set an IP range for dynamic IPv4 addresses. I used 192.168.6.80 to 192.168.6.95 here. It's best if this doesn't overlap any addresses you wish to assign statically. I also set my local domain name and router IP (192.168.6.1 in my case) and I set the lease time to 1 hour. You can increase it later when you're happy that everything works. DO NOT tick the 'Enable IPv6 support' box at this point. Don't enter any static lease information at this point. Click on save. 
 
@@ -67,7 +67,7 @@ On pihole2, the file will be different, and again you'll want to make sure the i
 
 The difference in these files defines the IPv6 dynamic range in the same way that we did for IPv4 addresses above - in this case pihole1 will issue addresses in the range 2a02:c0ff:ee::300 to 2a02:c0ff:ee::3ff. The reason we start at 300 and 400 is because the IPv6 address space is greater, and it means we can use 0 to 255 to match the static IPv4 allocations for consistency. Not needed, but it looks nicer. 
 
-=== Deploy! ===
+### Deploy! 
 Run ./sync-local.sh - the first time you run it, if you've not SSHed into your piholes already, you'll be asked to confirm ssh host keys. Every time you run it, it will check to see if the files have been changes, print out a diff of the changes, then restart the pihole service to reload the configuration. 
 
 Once this has happened, you'll notice that the 'Static DHCP leases configuration' table under the 'DHCP' tab in pihole is now populated with your MAC and hostname pairs. If you update them in the web interface, they will be overwritten next time you run 'sync-local.sh' though.
