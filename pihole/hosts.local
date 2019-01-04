@@ -1,10 +1,10 @@
 192.168.6.3             pihole1
-2a02:c0ff:ee::3         pihole1
+fd00:c0ff:ee::3         pihole1
 192.168.6.4             pihole2
-2a02:c0ff:ee::4         pihole2
+fd00:c0ff:ee::4         pihole2
 192.168.6.10            desktop
-2a02:c0ff:ee::10        desktop
+fd00:c0ff:ee::10        desktop
 192.168.6.11            pizero
-2a02:c0ff:ee::11        pizero
+fd00:c0ff:ee::11        pizero
 192.168.6.12            somethingelse
-2a02:c0ff:ee::12        somethingelse
+fd00:c0ff:ee::12        somethingelse

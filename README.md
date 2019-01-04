@@ -13,7 +13,7 @@ Set up pair of pihole servers. Give them static IP addresses. I'm using one on a
 Edit the `pihole/hosts.local` file and set up any static IPs that you wish to assign. Duplicate hostnames for IPv4 and IPv6 entries. There are more examples in the file, but this will be used for both A and AAAA records, as well as PTR records for the reverse entries.
 
     192.168.6.10            desktop
-    2a02:c0ff:ee::10        desktop 
+    fd00:c0ff:ee::10        desktop 
 
 Define MAC addresses and hostnames in `dnsmasq.d/04-pihole-static-dhcp.conf` using the following format. These will be used for IPv4 and IPv6 lookups on the local network.
 
@@ -27,7 +27,7 @@ Next you'll need to enter your own specific values for DNS server addresses and 
     domain=example.com
     expand-hosts
     dhcp-option=6,192.168.6.3,192.168.6.4
-    dhcp-option=option6:dns-server,[2a02:c0ff:ee::3],[2a02:c0ff:ee::4]
+    dhcp-option=option6:dns-server,[fd00:c0ff:ee::3],[fd00:c0ff:ee::4]
     ra-param=*,0,0
 
 Finally, if your piholes are not called 'pihole1' and 'pihole2' then edit the line at the top of `sync-local.sh`. If you don't have any working DNS at the moment, you can put IP addresses there instead. 
@@ -67,7 +67,7 @@ On pihole2, the file will be different, and again you'll want to make sure the i
 
     dhcp-range=::400,::4ff,constructor:eth0,ra-names,slaac,1h
 
-The difference in these files defines the IPv6 dynamic range in the same way that we did for IPv4 addresses above - in this case pihole1 will issue addresses in the range 2a02:c0ff:ee::300 to 2a02:c0ff:ee::3ff. The reason we start at 300 and 400 is because the IPv6 address space is greater, and it means we can use 0 to 255 to match the static IPv4 allocations for consistency. Not needed, but it looks nicer. 
+The difference in these files defines the IPv6 dynamic range in the same way that we did for IPv4 addresses above - in this case pihole1 will issue addresses in the range fd00:c0ff:ee::300 to fd00:c0ff:ee::3ff. The reason we start at 300 and 400 is because the IPv6 address space is greater, and it means we can use 0 to 255 to match the static IPv4 allocations for consistency. Not needed, but it looks nicer. 
 
 ### Deploy! 
 Run ./sync-local.sh - the first time you run it, if you've not SSHed into your piholes already, you'll be asked to confirm ssh host keys. Every time you run it, it will check to see if the files have been changes, print out a diff of the changes, then restart the pihole service to reload the configuration. 
